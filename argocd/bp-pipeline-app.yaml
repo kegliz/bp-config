@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: declarative
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/kegliz/bp-pipeline.git'
+    path: .
+    targetRevision: HEAD
+    directory:
+      recurse: true
+      jsonnet: {}
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: bp-pipeline
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
